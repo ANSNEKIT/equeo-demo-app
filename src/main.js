@@ -2,8 +2,7 @@ import Vue from "vue";
 import App from "./App.vue";
 import store from "./store";
 
-import "normalize.css/normalize.css";
-import "./style.scss";
+import "./styles/style.scss";
 
 Vue.config.productionTip = false;
 
