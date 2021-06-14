@@ -17,6 +17,7 @@
               v-for="(item, idx) in sortList"
               :key="idx"
               @change="changeSort(idx)"
+              @select="sortByPriceInc"
             >
               <input
                 class="sort-list__input"
@@ -44,7 +45,7 @@
 <script>
 import InfoIcon from "./InfoIcon.vue";
 import SortIcon from "./SortIcon.vue";
-import { mapGetters, mapMutations } from "vuex";
+import { mapGetters, mapMutations, mapActions } from "vuex";
 
 export default {
   components: {
@@ -60,9 +61,34 @@ export default {
       "openSortList",
       "closeSortList",
       "changeSortIndex",
+      "addSortData",
+    ]),
+    ...mapActions([
+      "sortByPriceInc",
+      "sortByPriceDec",
+      "sortByDataNew",
+      "sortByDataOld",
     ]),
     changeSort(index) {
       this.changeSortIndex(index);
+
+      switch (this.activeSortIndex) {
+        case 0:
+          this.addSortData([]);
+          break;
+        case 1:
+          this.sortByPriceInc();
+          break;
+        case 2:
+          this.sortByPriceDec();
+          break;
+        case 3:
+          this.sortByDataNew();
+          break;
+        case 4:
+          this.sortByDataOld();
+          break;
+      }
     },
   },
 };

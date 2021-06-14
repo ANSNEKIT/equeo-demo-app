@@ -2,7 +2,11 @@
   <div id="app">
     <Header />
     <main class="app__main container">
-      <Card v-for="item in 9" :key="item" />
+      <Card
+        v-for="(product, idx) in renderSort"
+        :key="idx"
+        :product="product"
+      />
     </main>
     <Popup v-if="isOpen" />
   </div>
@@ -23,12 +27,21 @@ export default {
   },
   mounted() {
     document.addEventListener("click", this.handleCloseSortList);
+
+    this.$store.dispatch("fetchData");
   },
   beforeUnmount() {
     document.removeEventListener("click", this.handleCloseSortList);
   },
   computed: {
-    ...mapGetters(["isOpen", "isShowSortList"]),
+    ...mapGetters(["isOpen", "isShowSortList", "products", "sortedData"]),
+    renderSort() {
+      if (this.sortedData.length) {
+        return this.sortedData;
+      } else {
+        return this.products;
+      }
+    },
   },
   methods: {
     ...mapMutations(["closeSortList"]),
@@ -40,14 +53,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-/* #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-} */
-</style>
