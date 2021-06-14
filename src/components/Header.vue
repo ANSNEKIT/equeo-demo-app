@@ -4,20 +4,37 @@
       <div class="header__left">
         <h1 class="header__page-title">Магазин подарков</h1>
         <div class="header__sort d-flex">
-          <select name="sort" id="sort">
-            <option value="">По умолчанию</option>
-            <option value="">По возрастанию</option>
-            <option value="">По убыванию</option>
-            <option value="">Новинки в начале</option>
-            <option value="">Новинки в конце</option>
-          </select>
-          <p>Выбор типа сортировки</p>
+          <a class="header__sort-link" @click="openSortList">
+            <span class="header__sort-icon"><SortIcon /></span>
+            Сортировка
+          </a>
+          <div
+            class="header__sort-list sort-list"
+            :class="isShowSortList ? 'show' : null"
+          >
+            <label
+              class="sort-list__item"
+              v-for="(item, idx) in sortList"
+              :key="idx"
+              @change="changeSort(idx)"
+            >
+              <input
+                class="sort-list__input"
+                type="radio"
+                :value="idx + 1"
+                name="order"
+                :checked="idx === 0"
+              />
+              <span class="sort-list__content">{{ item }}</span>
+            </label>
+          </div>
+          <p class="header__sort-type">{{ sortList[activeSortIndex] }}</p>
         </div>
       </div>
       <div class="header__right">
-        <button class="btn header__button">
+        <button class="btn header__button" @click="openPopup">
           О магазине
-          <span class="btn-icon"><info-icon></info-icon></span>
+          <span class="btn__icon"><info-icon></info-icon></span>
         </button>
       </div>
     </div>
@@ -26,10 +43,27 @@
 
 <script>
 import InfoIcon from "./InfoIcon.vue";
+import SortIcon from "./SortIcon.vue";
+import { mapGetters, mapMutations } from "vuex";
 
 export default {
   components: {
     InfoIcon,
+    SortIcon,
+  },
+  computed: {
+    ...mapGetters(["isShowSortList", "sortList", "activeSortIndex"]),
+  },
+  methods: {
+    ...mapMutations([
+      "openPopup",
+      "openSortList",
+      "closeSortList",
+      "changeSortIndex",
+    ]),
+    changeSort(index) {
+      this.changeSortIndex(index);
+    },
   },
 };
 </script>

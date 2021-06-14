@@ -4,7 +4,7 @@
     <main class="app__main container">
       <Card v-for="item in 9" :key="item" />
     </main>
-    <Popup />
+    <Popup v-if="isOpen" />
   </div>
 </template>
 
@@ -12,6 +12,7 @@
 import Header from "./components/Header.vue";
 import Card from "./components/Card.vue";
 import Popup from "./components/Popup.vue";
+import { mapGetters, mapMutations } from "vuex";
 
 export default {
   name: "App",
@@ -19,6 +20,23 @@ export default {
     Header,
     Card,
     Popup,
+  },
+  mounted() {
+    document.addEventListener("click", this.handleCloseSortList);
+  },
+  beforeUnmount() {
+    document.removeEventListener("click", this.handleCloseSortList);
+  },
+  computed: {
+    ...mapGetters(["isOpen", "isShowSortList"]),
+  },
+  methods: {
+    ...mapMutations(["closeSortList"]),
+    handleCloseSortList(e) {
+      if (this.isShowSortList && e.target.className !== "header__sort-link") {
+        this.closeSortList();
+      }
+    },
   },
 };
 </script>

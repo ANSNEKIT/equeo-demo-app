@@ -1,7 +1,7 @@
 <template>
-  <div class="popup backdrop">
+  <div class="popup backdrop" @click="closePopup" @keydown.esc="closePopup">
     <div class="popup__body">
-      <div class="popup__content">
+      <div class="popup__content" @click.stop>
         <slot>
           <h1 class="popup__title">
             Условия приобретения и получения подарков
@@ -23,14 +23,34 @@
             сумме, указанной в чеке.
           </p>
         </slot>
-        <button class="popup__close">X<span></span></button>
+        <button class="popup__close" @click="closePopup">X<span></span></button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+import { mapGetters, mapMutations } from "vuex";
+
+export default {
+  mounted() {
+    document.addEventListener("keydown", this.handleKeydown);
+  },
+  beforeUnmount() {
+    document.removeEventListener("keydown", this.handleKeydown);
+  },
+  computed: {
+    ...mapGetters(["isOpen"]),
+  },
+  methods: {
+    ...mapMutations(["closePopup"]),
+    handleKeydown(e) {
+      if (this.isOpen && e.key === "Escape") {
+        this.closePopup();
+      }
+    },
+  },
+};
 </script>
 
 <style></style>
