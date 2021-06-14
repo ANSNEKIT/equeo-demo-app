@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import HitIcon from "./HitIcon.vue";
+import HitIcon from "./Icons/HitIcon.vue";
 
 export default {
   props: {

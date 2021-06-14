@@ -46,7 +46,7 @@ export default {
   methods: {
     ...mapMutations(["closeSortList"]),
     handleCloseSortList(e) {
-      if (this.isShowSortList && e.target.className !== "header__sort-link") {
+      if (this.isShowSortList && e.target.className !== "sort__link") {
         this.closeSortList();
       }
     },
